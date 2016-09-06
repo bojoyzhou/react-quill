@@ -369,7 +369,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!**************************************************************************************!*\
   !*** external {"commonjs":"react","commonjs2":"react","amd":"react","root":"React"} ***!
   \**************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
@@ -378,7 +378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!*****************************************************************************************************!*\
   !*** external {"commonjs":"react-dom","commonjs2":"react-dom","amd":"react-dom","root":"ReactDOM"} ***!
   \*****************************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
@@ -492,19 +492,25 @@ return /******/ (function(modules) { // webpackBootstrap
 		renderChoiceItem: function(item, key) {
 			return React.DOM.option({
 				key: item.label || item.value || key,
-				value:item.value,
-				selected:item.selected },
+				value:item.value },
 				item.label
 			);
 		},
 	
 		renderChoices: function(item, key) {
-			return React.DOM.select({
+			var attrs = {
 				key: item.label || key,
 				title: item.label,
-				className: 'ql-'+item.type },
-				item.items.map(this.renderChoiceItem)
-			);
+				className: 'ql-'+item.type
+			};
+			var self = this;
+			var choiceItems = item.items.map(function(item, key) {
+				if (item.selected) {
+					attrs.defaultValue = item.value;
+				}
+				return self.renderChoiceItem(item, key);
+			})
+			return React.DOM.select(attrs, choiceItems);
 		},
 	
 		renderAction: function(item, key) {
@@ -542,6 +548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			var html = children.map(ReactDOMServer.renderToStaticMarkup).join('');
 			return React.DOM.div({
 				className: this.getClassName(),
+				style: this.props.style || {},
 				dangerouslySetInnerHTML: { __html:html }
 			});
 		}
@@ -558,7 +565,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!********************************************************************************************************************************!*\
   !*** external {"commonjs":"react-dom/server","commonjs2":"react-dom/server","amd":"react-dom/server","root":"ReactDOMServer"} ***!
   \********************************************************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
 
@@ -648,12 +655,12 @@ return /******/ (function(modules) { // webpackBootstrap
 		makeUnprivilegedEditor: function(editor) {
 			var e = editor;
 			return {
-				getLength:    function(){ e.getLength.apply(e, arguments); },
-				getText:      function(){ e.getText.apply(e, arguments); },
-				getHTML:      function(){ e.getHTML.apply(e, arguments); },
-				getContents:  function(){ e.getContents.apply(e, arguments); },
-				getSelection: function(){ e.getSelection.apply(e, arguments); },
-				getBounds:    function(){ e.getBounds.apply(e, arguments); },
+				getLength:    function(){ return e.getLength.apply(e, arguments); },
+				getText:      function(){ return e.getText.apply(e, arguments); },
+				getHTML:      function(){ return e.getHTML.apply(e, arguments); },
+				getContents:  function(){ return e.getContents.apply(e, arguments); },
+				getSelection: function(){ return e.getSelection.apply(e, arguments); },
+				getBounds:    function(){ return e.getBounds.apply(e, arguments); },
 			};
 		}
 	
@@ -667,7 +674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*!**************************************************************************************!*\
   !*** external {"commonjs":"quill","commonjs2":"quill","amd":"quill","root":"Quill"} ***!
   \**************************************************************************************/
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
 
